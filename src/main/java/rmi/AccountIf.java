@@ -14,11 +14,11 @@ import java.rmi.RemoteException;
  */
 public interface AccountIf extends Remote {
     
-    void deposit(int amount) throws RemoteException;
-    void withdraw(int amount) throws RemoteException;
+    void deposit(float amount) throws RemoteException, Exception;
+    void withdraw(float amount) throws RemoteException, Exception;
     
-    int getAmount() throws RemoteException;
+    float getAmount() throws RemoteException;
 
     String getId() throws RemoteException;
-    
+    String getBank() throws  RemoteException;
 }

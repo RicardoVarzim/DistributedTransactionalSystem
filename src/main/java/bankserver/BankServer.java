@@ -14,11 +14,6 @@ import java.rmi.Remote;
  */
 public class BankServer {
     public static void main(String[] args) throws Exception{
-        Bank b = new Bank();
         
-        for (int i = 0; i < 10; i++) {
-            b.makeAccount();
-        }
-        Naming.rebind("bank", b);
     }
 }

@@ -5,9 +5,11 @@
  */
 package bankserver;
 
-import bankserver.Account;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 import rmi.AccountIf;
 import rmi.BankIf;
 
@@ -16,30 +18,52 @@ import rmi.BankIf;
  * @author ricardo
  */
 public class Bank extends UnicastRemoteObject implements BankIf {
-    private AccountIf[] accounts;
-    private int currentId;
     
-    public Bank() throws RemoteException{
-        this.currentId = 0;
+    private String name;
+    private Map<String, AccountIf> accounts = new HashMap<String,AccountIf>();
+    private Statement sqlStatement;
+    private String datasource = "myBankDB";
+    private String dbms = "derby";
+    
+    public Bank(String name, String datasource, String dbms) throws RemoteException{
+        super();
+        this.name = name;
+        this.datasource = datasource;
+        this.dbms = dbms;
+        createDB();
     }
     
-    public Bank(AccountIf[] accounts) throws RemoteException{
-        this.accounts = accounts;
-        this.currentId = 0;
+    public Bank(String name) throws RemoteException{
+        super();
+        this.name = name;
+        createDB();
     }
+    
+    
 
+    
     @Override
-    public AccountIf find(Integer accountId) throws RemoteException {
-        for(AccountIf a : accounts){
-            if(a.getId().equals(accountId))
-                return a;
-        }
-        return null;
+    public AccountIf findAccount(String accountId) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public AccountIf makeAccount() throws RemoteException {
-        this.currentId++;
-        return new Account(String.valueOf(currentId));
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public boolean deleteAccount() throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String[] listAccounts() throws RemoteException {
+        return accounts.keySet().toArray(new String[1]);
+    }
+
+    private void createDB() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
