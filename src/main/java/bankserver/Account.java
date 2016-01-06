@@ -37,7 +37,12 @@ public class Account extends UnicastRemoteObject implements AccountIf{
             throw new SQLException(ex.getMessage());
         }
     }
+
+    Account(String accountId, String name, Connection connection) throws RemoteException, SQLException {
+        this(accountId,name,1000,connection);
+    }
     
+    //<editor-fold desc="Account Interface Implementation">
     @Override
     public synchronized void deposit(float amount) throws RemoteException, Exception {
         //TODO: concorrency with lock for this
@@ -111,5 +116,6 @@ public class Account extends UnicastRemoteObject implements AccountIf{
     public String getBank() throws RemoteException {
         return this.bank;
     }
+    //</editor-fold>
     
 }

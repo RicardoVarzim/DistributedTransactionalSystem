@@ -14,11 +14,11 @@ import java.rmi.RemoteException;
  */
 public interface BankIf extends Remote{
     
-    public AccountIf findAccount(String accountId) throws RemoteException;
+    public AccountIf findAccount(String accountId) throws RemoteException, Exception;
     
-    public AccountIf makeAccount() throws RemoteException;
+    public AccountIf makeAccount(String accountId) throws RemoteException, Exception;
     
-    public boolean deleteAccount() throws RemoteException;
+    public boolean deleteAccount(String accountId) throws RemoteException, Exception;
     
     public String[] listAccounts() throws RemoteException;
 }
