@@ -25,7 +25,7 @@ public class Cohort extends UnicastRemoteObject implements CohortIf {
     }
     
     @Override
-    public boolean voteRequest(String id, String sql) throws RemoteException {
+    public boolean voteRequest(long id, String sql) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -53,5 +53,6 @@ public class Cohort extends UnicastRemoteObject implements CohortIf {
     public void executeAndCommit(String sql) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     
 }

@@ -10,5 +10,13 @@ package transactionserver;
  * @author ricardo
  */
 class CoordinatorLog {
+
+    CoordinatorLog(Transaction transaction) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    CoordinatorLog(long transId, Coordinator.CoordinatorStatus coordinatorStatus) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

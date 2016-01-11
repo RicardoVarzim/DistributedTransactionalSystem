@@ -14,7 +14,7 @@ import java.rmi.RemoteException;
  */
 public interface CohortIf extends Remote {
     
-    boolean voteRequest(String id, String sql) throws RemoteException;
+    boolean voteRequest(long id, String sql) throws RemoteException;
     boolean commit(long id) throws RemoteException;
     String getBankName() throws RemoteException;
     boolean roolback(long id) throws RemoteException;
