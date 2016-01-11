@@ -1,4 +1,4 @@
-
+//TO DELETE
 package bankserver;
 
 import java.sql.Connection;
@@ -31,7 +31,7 @@ public class DerbyTest {
         
     }
     
-    public static void main(String[] args) {
+    public  void main(String[] args) {
         new DerbyTest();
     }    
 }
