@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rmi;
+package bankserver;
 
+import bankserver.AccountIf;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 

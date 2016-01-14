@@ -10,7 +10,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import rmi.AccountIf;
 
 /**
  *
