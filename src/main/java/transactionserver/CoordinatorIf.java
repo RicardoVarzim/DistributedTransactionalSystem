@@ -5,6 +5,8 @@
  */
 package transactionserver;
 
+import transaction.Transaction;
+import transaction.SubTransaction;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;

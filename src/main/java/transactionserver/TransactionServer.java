@@ -5,6 +5,9 @@
  */
 package transactionserver;
 
+import java.rmi.Naming;
+import java.rmi.registry.LocateRegistry;
+
 /**
  *
  * @author ricardo
@@ -12,29 +15,43 @@ package transactionserver;
 public class TransactionServer {
     
     private static String DBMS = "derby";
-    private static int RMIPORT = 1234;
+    private static int RMIPORT = 1235;
+    private String datasource = "log";
+    private CoordinatorIf coordinator;
     
-    private TransactionServer(String rminame, String datasource) {
-        //TODO:
+    private TransactionServer(CoordinatorIf coordinator, String datasource) {
+        this.coordinator = coordinator;
+        this.datasource = datasource;
     }
     
     public static void main(String[] args) throws Exception{
+        try {
+            
+            System.out.println("java transactionserver.TransactionServer [rmi url] [db]");
+
+            String rminame = null;
+            if(args.length >0)
+                rminame = args[0];
+            else
+                rminame = "//localhost:"+RMIPORT+"/transaction";
+
+            String datasource = null;
+            if(args.length > 1)
+                datasource = args[1];
+            else
+                datasource = "log";
+
+            LocateRegistry.createRegistry(RMIPORT);
+            CoordinatorIf coordinator = new Coordinator();
+            Naming.rebind("rmi:"+rminame,coordinator);
+            System.out.println("RMI transaction Manager object registered");
+            System.out.println("URL: rmi:"+rminame);
+            new TransactionServer(coordinator, datasource);
+            
+        } catch (Exception e) {
+            throw e;
+        }
         
-        System.out.println("java transactionserver.TransactionServer [rmi url] [db]");
-        
-        String rminame = null;
-        if(args.length >0)
-            rminame = args[0];
-        else
-            rminame = "//localhost:"+RMIPORT+"/bank";
-        
-        String datasource = null;
-        if(args.length > 1)
-            datasource = args[1];
-        else
-            datasource = "bank";
-        
-        new TransactionServer(rminame, datasource);
     }
 
     

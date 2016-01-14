@@ -13,20 +13,75 @@ import java.util.List;
  */
 class CoordinatorLogger {
 
-    CoordinatorLogger(String coordinatorlog) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private String fileName;
+    //private FileWriter fileWriter;
+
+    public CoordinatorLogger(String dbName) {
+        this.fileName = dbName + ".json";
     }
 
-    void log(CoordinatorLog coordinatorLog) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void log(CoordinatorLog logItem) {
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+//        try {
+//            if(logItem.getStatus().toString().equals("INIT")){
+//                this.fileWriter = new FileWriter(fileName, false);
+//                fileWriter.write('[');
+//            }else{
+//                this.fileWriter = new FileWriter(fileName, true);
+//                fileWriter.write(',');
+//            }
+//            mapper.writeValue(fileWriter, logItem);
+//            fileWriter.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
-    List<CoordinatorLog> getLogItems(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<CoordinatorLog> getLogItems(String id) {
+//        ArrayList<CoordinatorLog>logItems = null;
+//
+//        try {
+//            byte[] encoded = Files.readAllBytes(Paths.get("errorlogs/" + id + ".json"));
+//            String jsonAsString = new String(encoded, Charset.defaultCharset());
+//            jsonAsString+="]";
+//            Collection<CoordinatorLog> items = new ObjectMapper().readValue(jsonAsString, new TypeReference<Collection<CoordinatorLog>>() { });
+//            logItems=new ArrayList<>(items);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return logItems;
+        return null;
     }
 
-    void errorLog(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<CoordinatorLog> getLogItems() {
+//        ArrayList<CoordinatorLog>logItems = null;
+//
+//        try {
+//            byte[] encoded = Files.readAllBytes(Paths.get(fileName));
+//            String jsonAsString = new String(encoded, Charset.defaultCharset());
+//            jsonAsString+="]";
+//            Collection<CoordinatorLog> items = new ObjectMapper().readValue(jsonAsString, new TypeReference<Collection<CoordinatorLog>>() { });
+//            logItems=new ArrayList<>(items);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return logItems;º
+        return null;
+    }
+
+    public void errorLog(Long id){
+//        try{
+//            Files.createDirectory(Paths.get("errorlogs"));
+//        } catch(IOException e){
+//        }
+//        Path from = Paths.get("Coordinatorlog.json");
+//        Path to = Paths.get("errorlogs/" + id + ".json");
+//        try {
+//            Files.copy(from, to);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
     
 }

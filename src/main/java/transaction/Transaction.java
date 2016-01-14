@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package transactionserver;
+package transaction;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @author ricardo
  */
-class Transaction implements Serializable{
+public class Transaction implements Serializable{
     
     private ArrayList<SubTransaction> subTransactions;
     private long transId;

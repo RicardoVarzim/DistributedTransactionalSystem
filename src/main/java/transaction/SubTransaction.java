@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package transactionserver;
+package transaction;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author ricardo
  */
-class SubTransaction implements Serializable {
+public class SubTransaction implements Serializable {
     
     private String bankname;
     private String query;

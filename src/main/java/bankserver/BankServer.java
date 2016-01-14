@@ -6,11 +6,7 @@
 package bankserver;
 
 import java.rmi.Naming;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -25,7 +21,7 @@ public class BankServer {
         try {
             LocateRegistry.createRegistry(RMIPORT);
             BankIf bank = new Bank("bank1", datasource, DBMS);
-            java.rmi.Naming.rebind(rminame, bank);
+            Naming.rebind(rminame, bank);
             System.out.println(rminame +" ready");
         } catch (Exception ex) {
             System.err.println("Error registering rmi");

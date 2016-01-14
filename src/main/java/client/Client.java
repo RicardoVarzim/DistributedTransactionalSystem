@@ -5,6 +5,10 @@
  */
 package client;
 
+import java.rmi.Naming;
+import transactionserver.Coordinator;
+import transactionserver.CoordinatorIf;
+
 /**
  *
  * @author ricardo
@@ -12,6 +16,14 @@ package client;
 public class Client {
     
     public static void main(String[] args) throws Exception{
-        
+        try {
+            String rmiTransaction = "//localhost:1235/transaction";
+            CoordinatorIf coordinator = (CoordinatorIf) Naming.lookup("rmi:"+rmiTransaction);
+            //System.out.println(coordinator);
+            GUI gui = new GUI(coordinator);
+            gui.setVisible(true);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }
