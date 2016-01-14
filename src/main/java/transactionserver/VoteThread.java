@@ -29,7 +29,7 @@ class VoteThread extends Thread{
 
     public void run(){
         try {
-            votes.add(cohort.voteRequest(id, st.getQuery()));
+            votes.add(cohort.voteRequest(id, st.getValue(),st.getBalance()));
         } catch (RemoteException e) {
             e.printStackTrace();
         }

@@ -30,6 +30,7 @@ public class BankServer {
     }
     public static void main(String[] args) throws Exception{
         
+        //TODO: atribuir diferentes url rmi's para cada Instancia
         System.out.println("java bankserver.BankServer [rmi url] [db]");
         
         String rminame = null;

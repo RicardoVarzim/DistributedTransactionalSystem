@@ -14,11 +14,15 @@ import java.io.Serializable;
 public class SubTransaction implements Serializable {
     
     private String bankname;
-    private String query;
+    private float value;
+    private boolean balance; // 0 - withdraw // 1 - deposit
+    private String account;
     
-    public SubTransaction(String bank, String query){
+    public SubTransaction(String bank, String account,float value, boolean balance){
         this.bankname = bank;
-        this.query = query;
+        this.value = value;
+        this.balance = balance;
+        this.account = account;
     }
 
     /**
@@ -36,16 +40,45 @@ public class SubTransaction implements Serializable {
     }
 
     /**
-     * @return the query
+     * @return the value
      */
-    public String getQuery() {
-        return query;
+    public float getValue() {
+        return value;
     }
 
     /**
-     * @param query the query to set
+     * @param value the value to set
      */
-    public void setQuery(String query) {
-        this.query = query;
+    public void setValue(float value) {
+        this.value = value;
     }
+
+    /**
+     * @return the balance
+     */
+    public boolean getBalance() {
+        return balance;
+    }
+
+    /**
+     * @param balance the balance to set
+     */
+    public void setBalance(boolean balance) {
+        this.balance = balance;
+    }
+
+    /**
+     * @return the account
+     */
+    public String getAccount() {
+        return account;
+    }
+
+    /**
+     * @param account the account to set
+     */
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
 }

@@ -5,6 +5,7 @@
  */
 package transactionserver;
 
+import bankserver.BankIf;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -17,6 +18,7 @@ public class Cohort extends UnicastRemoteObject implements CohortIf {
     
     private Coordinator coord;
     //private Connection con; //TODO rmi connection to the Bank?
+    private BankIf bank;
     private String bankName;
     private CohortLogger logger;
     private boolean shouldNotCommit = false;
@@ -29,6 +31,7 @@ public class Cohort extends UnicastRemoteObject implements CohortIf {
         try{
             this.coord = (Coordinator)Naming.lookup(coordAdress);
             //this.con = DriverManager.getConnection(cordUrl, user, pass);
+            this.bank = (BankIf)Naming.lookup("rmi://localhost:1234/bank");
             //con.setAutoCommit(false);
         }catch (Exception e) {
             e.printStackTrace();
@@ -36,7 +39,7 @@ public class Cohort extends UnicastRemoteObject implements CohortIf {
     }
     
     @Override
-    public boolean voteRequest(long id, String sql) throws RemoteException{
+    public boolean voteRequest(long id, float value, boolean balance) throws RemoteException{
         System.out.println("Vote request ");
         logger.log(new CohortLog(id, CohortStatus.INIT));
         System.out.println("Logged status INIT: " + id);

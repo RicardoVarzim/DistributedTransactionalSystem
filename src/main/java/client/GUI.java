@@ -26,11 +26,11 @@ class GUI extends JFrame{
         this.coordinator = coordinator;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new FlowLayout());
-        JButton but1 = new JButton("Transaction 1");
+        JButton but1 = new JButton("bank1 -> bank2");
         but1.addActionListener(e -> {
             try {
-                SubTransaction trans1 = new SubTransaction("BilDB", "INSERT INTO biler VALUES(DEFAULT,'brafarg')");
-                SubTransaction trans2 = new SubTransaction("FlyDB", "INSERT INTO biletter VALUES(DEFAULT,'passasjer')");
+                SubTransaction trans1 = new SubTransaction("bank1", "0001", 100, true);
+                SubTransaction trans2 = new SubTransaction("bank2", "0001", 100, false);
                 ArrayList<SubTransaction> sts = new ArrayList<>();
                 sts.add(trans1);
                 sts.add(trans2);
@@ -43,12 +43,11 @@ class GUI extends JFrame{
         });
         add(but1);
 
-        JButton but2 = new JButton("Transaction 2");
+        JButton but2 = new JButton("bank1 <- bank2");
         but2.addActionListener(e -> {
             try {
-                SubTransaction trans1 = new SubTransaction("BilDB", "INSERT INTO biler VALUES(DEFAULT,'Fin Farge')");
-                //Changed ".. INTO biletter" to "... INTO baasdiletter", to manually force an error.
-                SubTransaction trans2 = new SubTransaction("FlyDB", "INSERT INTO baasdiletter VALUES(DEFAULT,'passasjer')");
+                SubTransaction trans1 = new SubTransaction("bank1", "0001", 100, false);
+                SubTransaction trans2 = new SubTransaction("bank2", "0001", 100, true);
                 ArrayList<SubTransaction> sts = new ArrayList<>();
                 sts.add(trans1);
                 sts.add(trans2);
