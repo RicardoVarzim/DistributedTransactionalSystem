@@ -9,14 +9,18 @@ import rmi.AccountIf;
 import rmi.BankIf;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -29,6 +33,7 @@ public class Bank extends UnicastRemoteObject implements BankIf {
     private Statement sqlStatement;
     private String datasource = "bank";
     private String dbms = "derby";
+    private Connection con;
     
     public Bank(String name, String datasource, String dbms) throws RemoteException{
         super();
@@ -36,6 +41,12 @@ public class Bank extends UnicastRemoteObject implements BankIf {
         this.datasource = datasource;
         this.dbms = dbms;
         createDB();
+        try {
+            //default Account
+            makeAccount("0000");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
     
     public Bank(String name) throws RemoteException{
@@ -82,7 +93,7 @@ public class Bank extends UnicastRemoteObject implements BankIf {
         }
         ResultSet result = null;
         try {
-            result = sqlStatement.executeQuery("SELECT * from" + name + " WHERE ID=" +accountId+"'");
+            result = sqlStatement.executeQuery("SELECT * from "+name+" WHERE ID = '"+accountId+"' ");
             
             if(result.next()){
                 //account exists
@@ -92,12 +103,12 @@ public class Bank extends UnicastRemoteObject implements BankIf {
             }
             result.close();
             
-            int rows = sqlStatement.executeUpdate("INSERT INTO "+ name +"VALUES ('"+ accountId +"',1000)");
+            int rows = sqlStatement.executeUpdate("INSERT INTO "+name+" VALUES ( '"+accountId+"' ,1000)");
             
             if(rows == 1){
                 tempAccount = new Account(accountId, name, getConnection());
                 accounts.put(name, tempAccount);
-                System.out.println("Account " + accountId + "created");
+                System.out.println("Account " + accountId + " created");
                 return tempAccount;
             }
             else{
@@ -133,10 +144,10 @@ public class Bank extends UnicastRemoteObject implements BankIf {
     
     private void createDB() {
         try {
-            Connection connection = getConnection();
-            connection.setAutoCommit(true);
-            sqlStatement = connection.createStatement();
-            boolean exists = ExistsDatabase(connection);
+            con = getConnection();
+            con.setAutoCommit(true);
+            sqlStatement = con.createStatement();
+            boolean exists = ExistsDatabase(con);
             if(!exists){
                 sqlStatement.executeUpdate("CREATE TABLE "+name+" (Id VARCHAR(32) PRIMARY KEY, Balance FLOAT)");
             }

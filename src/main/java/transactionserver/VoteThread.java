@@ -17,21 +17,28 @@ import rmi.AccountIf;
 
 class VoteThread extends Thread{
     private List<Boolean> votes;
-    private Cohort cohort;
+    //private Cohort cohort;
     private AccountIf account;
     private SubTransaction st;
     private long id;
 
-    public VoteThread(long id, List<Boolean> votes, Cohort cohort, SubTransaction st){
+    public VoteThread(long id, List<Boolean> votes, AccountIf account, SubTransaction st){
         this.votes = votes;
-        this.cohort = cohort;
+        this.account = account;
         this.st = st;
         this.id = id;
     }
 
     public void run(){
         try {
-            votes.add(cohort.voteRequest(id, st.getValue(),st.getBalance()));
+            
+            //verificar disponibilidade de saldo
+            float temp_amount = account.getAmount();
+            if(!st.getBalance()){
+                temp_amount -= st.getValue();
+            }
+            votes.add(temp_amount>=0);
+            
         } catch (RemoteException e) {
             e.printStackTrace();
         }
