@@ -93,31 +93,6 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorIf{
         return true;
     }
 
-//    private void voteRequest() throws RemoteException {
-//        System.out.println("Begin vote requests");
-//        cohortThreads = new ArrayList<>();
-//		votes = Collections.synchronizedList(new ArrayList<>());
-//        System.out.println("Creating " + transaction.getSubTransactions().size() + " threads, 1 per SubTrans");
-//        for(SubTransaction st : transaction.getSubTransactions()) {
-//            this.cohortThreads.add(new VoteThread(transaction.getTransId(), votes, getCohort(st.getBankname()), st));
-//        }
-//
-//        cohortThreads.forEach(Thread::start); // SEND VOTE REQUESTS
-//
-//        System.out.println("Vote requests are sent");
-//        System.out.println("Logging status WAIT");
-//        logger.log(new CoordinatorLog(transaction.getTransId(), CoordinatorStatus.WAIT));
-//
-//        for (Thread t : cohortThreads) {
-//            try {
-//                //Timeout threads after a given time.
-//                t.join(THREAD_WAIT_TIME);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-	
     private void voteRequest() throws RemoteException {
         System.out.println("Begin vote requests");
         bankThreads = new ArrayList<>();
@@ -167,39 +142,10 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorIf{
     }
 
     @Override
-    public void commit(Long id) throws RemoteException {
-        System.out.println("Commiting transaction " + id);
-//        ArrayList<String> failureList = new ArrayList<>();
-//        ArrayList<Boolean> acks = new ArrayList<>();
-//        for(Cohort c: cohorts){
-//            if(isCohortInTransaction(c)){
-//                // this can timeout - threads?
-//                if(c.commit(id)) acks.add(true);
-//                else failureList.add(c.getBankName());
-//            }
-//        }
-//        if(acks.size() == transaction.getSubTransactions().size() && !acks.contains(false)){
-//            System.out.println("Commit successful");
-//            logger.log(new CoordinatorLog(transaction.getTransId(), CoordinatorStatus.FINISHED));
-//        }else{
-//            System.out.println("Commit failure.");
-//            failureList.forEach(s -> System.out.println("Run recovery on: " + s));
-//            logger.errorLog(id);
-//            logger.log(new CoordinatorLog(transaction.getTransId(), CoordinatorStatus.FINISHED));
-//        }
-    }
-
-    @Override
     public List<CoordinatorLog> getLogItems(String id) throws RemoteException {
         return logger.getLogItems(id);
     }
 
-//    public Cohort getCohort(String dbname) throws RemoteException {
-//        for(Cohort c : this.cohorts){
-//            if(c.getBankName().equals(dbname)) return c;
-//        }
-//        return null; 
-//    }
     
     public AccountIf getAccount(String bankName, String accountName) throws RemoteException {
         AccountIf account= null;
@@ -219,13 +165,6 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorIf{
         return account;
     }
         
-    private boolean isCohortInTransaction(Cohort c) throws RemoteException  {
-        for(SubTransaction st: transaction.getSubTransactions()){
-            if(st.getBankname().equals(c.getBankName())) return true;
-        }
-        return false;
-    }
-
     private void commitRequest() throws RemoteException {
         System.out.println("Begin commit requests");
         bankThreads = new ArrayList<>();

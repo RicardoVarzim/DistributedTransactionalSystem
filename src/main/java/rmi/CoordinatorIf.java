@@ -25,7 +25,6 @@ public interface CoordinatorIf extends Remote {
     CoordinatorLogger getLogger() throws RemoteException;
     void rollback() throws RemoteException;
     void setTransaction(Transaction transaction) throws RemoteException;
-    void commit(Long id) throws RemoteException;
     Transaction getTransaction() throws RemoteException;
     List<CoordinatorLog> getLogItems(String id) throws RemoteException;
 }
