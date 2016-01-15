@@ -5,7 +5,9 @@
  */
 package transactionserver;
 
-import bankserver.BankIf;
+import rmi.CohortIf;
+import rmi.AccountIf;
+import rmi.BankIf;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -19,11 +21,11 @@ public class Cohort extends UnicastRemoteObject implements CohortIf {
     private Coordinator coord;
     //private Connection con; //TODO rmi connection to the Bank?
     private BankIf bank;
+    private AccountIf account;
     private String bankName;
+    private String accountId;
     private CohortLogger logger;
     private boolean shouldNotCommit = false;
-
-    
     
     public Cohort(String cordUrl, String user, String pass, String name, String coordAdress) throws RemoteException {
         this.bankName = name;
@@ -32,6 +34,7 @@ public class Cohort extends UnicastRemoteObject implements CohortIf {
             this.coord = (Coordinator)Naming.lookup(coordAdress);
             //this.con = DriverManager.getConnection(cordUrl, user, pass);
             this.bank = (BankIf)Naming.lookup("rmi://localhost:1234/bank");
+            System.out.println("Found bank "+ bankName);
             //con.setAutoCommit(false);
         }catch (Exception e) {
             e.printStackTrace();
@@ -45,6 +48,7 @@ public class Cohort extends UnicastRemoteObject implements CohortIf {
         System.out.println("Logged status INIT: " + id);
         try {
             //Statement st = this.con.createStatement();
+            account = bank.findAccount(accountId);
             System.out.println("Created statement");
             //int res = st.executeUpdate(sql);
 //            if(res==1){

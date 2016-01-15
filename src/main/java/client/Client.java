@@ -7,7 +7,7 @@ package client;
 
 import java.rmi.Naming;
 import transactionserver.Coordinator;
-import transactionserver.CoordinatorIf;
+import rmi.CoordinatorIf;
 
 /**
  *

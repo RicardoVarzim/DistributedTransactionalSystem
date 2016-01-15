@@ -12,7 +12,7 @@ import transactionserver.Coordinator.CoordinatorStatus;
  *
  * @author ricardo
  */
-class CoordinatorLog {
+public class CoordinatorLog {
 
     private CoordinatorStatus status;
     private long id;

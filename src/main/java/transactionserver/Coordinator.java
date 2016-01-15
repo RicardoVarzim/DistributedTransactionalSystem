@@ -5,6 +5,7 @@
  */
 package transactionserver;
 
+import rmi.CoordinatorIf;
 import transaction.Transaction;
 import transaction.SubTransaction;
 import java.rmi.RemoteException;
@@ -12,6 +13,10 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import rmi.AccountIf;
+import rmi.BankIf;
 
 /**
  *
@@ -20,8 +25,10 @@ import java.util.List;
 public class Coordinator extends UnicastRemoteObject implements CoordinatorIf{
     
     private List<Cohort> cohorts = Collections.synchronizedList(new ArrayList<>());
+    private List<BankIf> banks = Collections.synchronizedList(new ArrayList<>());
     List<Boolean> votes = Collections.synchronizedList(new ArrayList<>());
     private ArrayList<Thread> cohortThreads = new ArrayList<>();
+    private ArrayList<Thread> bankThreads = new ArrayList<>();
     private CoordinatorLogger logger = new CoordinatorLogger("Coordinatorlog");
     private Transaction transaction;
     private CoordinatorPingThread pingThread = new CoordinatorPingThread(cohorts);
@@ -41,6 +48,16 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorIf{
         return true;
     }
 
+    @Override
+    public boolean newBank(BankIf bank) throws RemoteException {
+        for(BankIf b: banks){
+           if(b.getName().equals(bank.getName())) return false;
+        }
+        this.banks.add(bank);
+        System.out.println("Nova Banco adicionado " + bank.getName());
+        return true;
+    }
+    
     @Override
     public boolean transaction(ArrayList<SubTransaction> requests) throws RemoteException {
         System.out.println("Begin transasction");
@@ -138,11 +155,54 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorIf{
         }
     }
 	
+//    private void voteRequest() throws RemoteException {
+//        System.out.println("Begin vote requests");
+//        bankThreads = new ArrayList<>();
+//        votes = Collections.synchronizedList(new ArrayList<>());
+//        System.out.println("Creating " + transaction.getSubTransactions().size() + " threads, 1 per SubTrans");
+//        for(SubTransaction st : transaction.getSubTransactions()) {
+//            this.bankThreads.add(new VoteThread(transaction.getTransId(), votes, getAccount(st.getBankname(),st.getAccount()), st));
+//        }
+//
+//        cohortThreads.forEach(Thread::start); // SEND VOTE REQUESTS
+//
+//        System.out.println("Vote requests are sent");
+//        System.out.println("Logging status WAIT");
+//        logger.log(new CoordinatorLog(transaction.getTransId(), CoordinatorStatus.WAIT));
+//
+//        for (Thread t : cohortThreads) {
+//            try {
+//                //Timeout threads after a given time.
+//                t.join(THREAD_WAIT_TIME);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+        
     public Cohort getCohort(String dbname) throws RemoteException {
         for(Cohort c : this.cohorts){
             if(c.getBankName().equals(dbname)) return c;
         }
         return null; 
+    }
+    
+    public AccountIf getAccount(String bankName, String accountName) throws RemoteException {
+        AccountIf account= null;
+        for(BankIf b : this.banks){
+            if(b.getName().equals(bankName)){
+                
+                try {
+                    account = b.findAccount(accountName);
+                } catch (Exception ex) {
+                    System.out.println("Cant find remote account.");
+                    ex.printStackTrace();
+                }
+               
+                
+            }
+        }
+        return account;
     }
         
     private boolean isCohortInTransaction(Cohort c) throws RemoteException  {

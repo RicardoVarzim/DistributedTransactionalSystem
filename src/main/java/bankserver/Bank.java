@@ -5,6 +5,8 @@
  */
 package bankserver;
 
+import rmi.AccountIf;
+import rmi.BankIf;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
@@ -162,6 +164,11 @@ public class Bank extends UnicastRemoteObject implements BankIf {
     private Connection getConnection() throws ClassNotFoundException, SQLException {
         //Class.forName("org.apache.derby.jdbc.ClientXADataSource");
         return DriverManager.getConnection("jdbc:derby://localhost:1527/"+ datasource );
+    }
+
+    @Override
+    public String getName() throws RemoteException {
+        return name;
     }
 
 }

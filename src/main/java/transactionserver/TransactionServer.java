@@ -5,6 +5,7 @@
  */
 package transactionserver;
 
+import rmi.CoordinatorIf;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 

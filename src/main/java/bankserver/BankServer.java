@@ -5,6 +5,7 @@
  */
 package bankserver;
 
+import rmi.BankIf;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 

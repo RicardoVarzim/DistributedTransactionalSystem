@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package transactionserver;
+package rmi;
 
 import transaction.Transaction;
 import transaction.SubTransaction;
@@ -11,6 +11,9 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import transactionserver.Cohort;
+import transactionserver.CoordinatorLog;
+import transactionserver.CoordinatorLogger;
 
 /**
  *
@@ -18,6 +21,7 @@ import java.util.List;
  */
 public interface CoordinatorIf extends Remote {
     boolean newCohort(Cohort cohort) throws RemoteException;
+    boolean newBank(BankIf bank) throws RemoteException;
     boolean transaction(ArrayList<SubTransaction> requets) throws RemoteException;
     CoordinatorLogger getLogger() throws RemoteException;
     void rollback() throws RemoteException;

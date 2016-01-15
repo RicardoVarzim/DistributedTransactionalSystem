@@ -8,6 +8,7 @@ package transactionserver;
 import transaction.SubTransaction;
 import java.rmi.RemoteException;
 import java.util.*;
+import rmi.AccountIf;
 
 /**
  *
@@ -17,6 +18,7 @@ import java.util.*;
 class VoteThread extends Thread{
     private List<Boolean> votes;
     private Cohort cohort;
+    private AccountIf account;
     private SubTransaction st;
     private long id;
 

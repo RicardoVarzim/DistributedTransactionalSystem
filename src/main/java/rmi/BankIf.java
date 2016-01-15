@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bankserver;
+package rmi;
 
-import bankserver.AccountIf;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -22,4 +21,6 @@ public interface BankIf extends Remote{
     public boolean deleteAccount(String accountId) throws RemoteException, Exception;
     
     public String[] listAccounts() throws RemoteException;
+    
+    public String getName() throws RemoteException;
 }

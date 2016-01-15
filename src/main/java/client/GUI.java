@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import transaction.SubTransaction;
-import transactionserver.CoordinatorIf;
+import rmi.CoordinatorIf;
 
 /**
  *
@@ -36,6 +36,10 @@ class GUI extends JFrame{
                 sts.add(trans2);
 
                 boolean answer = coordinator.transaction(sts);
+                if(answer)
+                    System.out.println("Transferência efectuada!");
+                else 
+                    System.out.println("Falha na Transferência!");
                 //this can be used in the application for further validation
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -53,6 +57,11 @@ class GUI extends JFrame{
                 sts.add(trans2);
 
                 boolean answer = coordinator.transaction(sts);
+                
+                if(answer)
+                    System.out.println("Transferência efectuada!");
+                else 
+                    System.out.println("Falha na Transferência!");
                 //this can be used in the application for further validation
             } catch (Exception ex) {
                 ex.printStackTrace();
