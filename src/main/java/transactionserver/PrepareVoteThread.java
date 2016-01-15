@@ -15,14 +15,14 @@ import rmi.AccountIf;
  * @author ricardo
  */
 
-class VoteThread extends Thread{
+class PrepareVoteThread extends Thread{
     private List<Boolean> votes;
     //private Cohort cohort;
     private AccountIf account;
     private SubTransaction st;
     private long id;
 
-    public VoteThread(long id, List<Boolean> votes, AccountIf account, SubTransaction st){
+    public PrepareVoteThread(long id, List<Boolean> votes, AccountIf account, SubTransaction st){
         this.votes = votes;
         this.account = account;
         this.st = st;

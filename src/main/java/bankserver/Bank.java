@@ -43,7 +43,8 @@ public class Bank extends UnicastRemoteObject implements BankIf {
         createDB();
         try {
             //default Account
-            makeAccount("0000");
+            if(findAccount("0000") == null)
+                makeAccount("0000");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -70,7 +71,7 @@ public class Bank extends UnicastRemoteObject implements BankIf {
                 ResultSet result = sqlStatement.executeQuery(sql);
 
                 if(result.next()){
-                    tempAccount = new Account(result.getString("name"), name, result.getFloat("balance"),getConnection());
+                    tempAccount = new Account(result.getString("ID"), name, result.getFloat("BALANCE"),getConnection());
                     result.close();
 
                     accounts.put(name,tempAccount);
@@ -100,6 +101,8 @@ public class Bank extends UnicastRemoteObject implements BankIf {
                 tempAccount = new Account(accountId, name, result.getFloat("balance"),getConnection());
                 accounts.put(accountId, tempAccount);
                 throw new Exception("Already exists Account " +accountId);
+                //System.out.println("Already exists Account " +accountId);
+                
             }
             result.close();
             

@@ -61,6 +61,7 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorIf{
         System.out.println("Begin transasction");
         this.transaction = new Transaction(requests);
         logger.log(new CoordinatorLog(transaction));
+        
         voteRequest();
         System.out.println("Checking if all votes are positive, and number of votes are correct.");
         if(votes.contains(false) || votes.size() < requests.size()){
@@ -75,6 +76,19 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorIf{
         System.out.println("Correct number of votes.");
         System.out.println("Logging status COMMIT");
         logger.log(new CoordinatorLog(transaction.getTransId(), CoordinatorStatus.COMMIT));
+        
+        commitRequest();
+        System.out.println("Checking if all votes are positive, and number of votes are correct.");
+        if(votes.contains(false) || votes.size() < requests.size()){
+            System.out.println("Too few votes / at least 1 false vote");
+            System.out.println("Logging status ABORT");
+            logger.log(new CoordinatorLog(transaction.getTransId(), CoordinatorStatus.ABORT));
+            System.out.println("Starting rollback");
+            rollback();
+            System.out.println("Rollback sucessful");
+            return false;
+        }
+        System.out.println("Correct number of votes.");
         System.out.println("Loggin status FINISHED");
         return true;
     }
@@ -110,7 +124,7 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorIf{
         votes = Collections.synchronizedList(new ArrayList<>());
         System.out.println("Creating " + transaction.getSubTransactions().size() + " threads, 1 per SubTrans");
         for(SubTransaction st : transaction.getSubTransactions()) {
-            this.bankThreads.add(new VoteThread(transaction.getTransId(), votes, getAccount(st.getBankname(),st.getAccount()), st));
+            this.bankThreads.add(new PrepareVoteThread(transaction.getTransId(), votes, getAccount(st.getBankname(),st.getAccount()), st));
         }
 
         bankThreads.forEach(Thread::start); // SEND VOTE REQUESTS
@@ -194,6 +208,7 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorIf{
                 
                 try {
                     account = b.findAccount(accountName);
+                    return account;
                 } catch (Exception ex) {
                     System.out.println("Cant find remote account.");
                     ex.printStackTrace();
@@ -209,6 +224,31 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorIf{
             if(st.getBankname().equals(c.getBankName())) return true;
         }
         return false;
+    }
+
+    private void commitRequest() throws RemoteException {
+        System.out.println("Begin commit requests");
+        bankThreads = new ArrayList<>();
+        votes = Collections.synchronizedList(new ArrayList<>());
+        System.out.println("Creating " + transaction.getSubTransactions().size() + " threads, 1 per SubTrans");
+        for(SubTransaction st : transaction.getSubTransactions()) {
+            this.bankThreads.add(new CommitVoteThread(transaction.getTransId(), votes, getAccount(st.getBankname(),st.getAccount()), st));
+        }
+
+        bankThreads.forEach(Thread::start); // SEND VOTE REQUESTS
+
+        System.out.println("Vote requests are sent");
+        System.out.println("Logging status WAIT");
+        logger.log(new CoordinatorLog(transaction.getTransId(), CoordinatorStatus.WAIT));
+
+        for (Thread t : bankThreads) {
+            try {
+                //Timeout threads after a given time.
+                t.join(THREAD_WAIT_TIME);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static class CoordinatorPingThread extends Thread {
