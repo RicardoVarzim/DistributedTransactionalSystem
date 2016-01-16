@@ -19,16 +19,16 @@ import java.util.List;
  *
  * @author ricardo
  */
-public class CoordinatorLogger{
+public class Logger{
 
     private String fileName;
     private FileWriter fileWriter;
 
-    public CoordinatorLogger(String dbName) {
+    public Logger(String dbName) {
         this.fileName = dbName + ".json";
     }
 
-    public void log(CoordinatorLog logItem) {
+    public void log(Log logItem) {
         //ObjectMapper mapper = new ObjectMapper();
         //mapper.enable(SerializationFeature.INDENT_OUTPUT);
         try {
@@ -46,8 +46,8 @@ public class CoordinatorLogger{
         }
     }
 
-    public List<CoordinatorLog> getLogItems(String id) {
-        ArrayList<CoordinatorLog>logItems = null;
+    public List<Log> getLogItems(String id) {
+        ArrayList<Log>logItems = null;
 
         try {
             byte[] encoded = Files.readAllBytes(Paths.get("errorlogs/" + id + ".json"));
@@ -61,8 +61,8 @@ public class CoordinatorLogger{
         return logItems;
     }
 
-    public List<CoordinatorLog> getLogItems() {
-        ArrayList<CoordinatorLog>logItems = null;
+    public List<Log> getLogItems() {
+        ArrayList<Log>logItems = null;
 
         try {
             byte[] encoded = Files.readAllBytes(Paths.get(fileName));

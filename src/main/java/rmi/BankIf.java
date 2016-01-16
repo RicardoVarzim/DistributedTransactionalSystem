@@ -7,6 +7,7 @@ package rmi;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  *
@@ -20,7 +21,7 @@ public interface BankIf extends Remote{
     
     public boolean deleteAccount(String accountId) throws RemoteException, Exception;
     
-    public String[] listAccounts() throws RemoteException;
+    public List<String> listAccounts() throws RemoteException;
     
     public String getName() throws RemoteException;
 }

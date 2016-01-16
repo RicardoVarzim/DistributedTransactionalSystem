@@ -19,7 +19,6 @@ import transaction.SubTransaction;
 class CommitVoteThread extends Thread {
     
     private List<Boolean> votes;
-    //private Cohort cohort;
     private AccountIf account;
     private SubTransaction st;
     private long id;

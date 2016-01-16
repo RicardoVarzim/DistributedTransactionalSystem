@@ -9,18 +9,16 @@ import rmi.AccountIf;
 import rmi.BankIf;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -140,8 +138,21 @@ public class Bank extends UnicastRemoteObject implements BankIf {
     }
 
     @Override
-    public String[] listAccounts() throws RemoteException {
-        return accounts.keySet().toArray(new String[1]);
+    public List<String> listAccounts() throws RemoteException {
+        ArrayList<String> values = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM " + name + ";";
+            ResultSet result = sqlStatement.executeQuery(sql);
+            
+            while(result.next()){
+                values.add(result.getString("ID"));
+                result.close();
+            }
+            
+        } catch (Exception e) {
+            return null;
+        }
+        return values ;
     }
     //</editor-fold>
     

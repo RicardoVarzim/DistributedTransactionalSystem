@@ -12,21 +12,21 @@ import transactionserver.Coordinator.CoordinatorStatus;
  *
  * @author ricardo
  */
-public class CoordinatorLog {
+public class Log {
 
     private CoordinatorStatus status;
     private long id;
     private Transaction transaction;
 
-    public CoordinatorLog(long id, CoordinatorStatus status) {
+    public Log(long id, CoordinatorStatus status) {
         this.id = id;
         this.status = status;
     }
 
-    public CoordinatorLog(){
+    public Log(){
     }
 
-    public CoordinatorLog(Transaction transaction){
+    public Log(Transaction transaction){
         this.transaction = transaction;
         this.id = transaction.getTransId();
         this.status = CoordinatorStatus.INIT;

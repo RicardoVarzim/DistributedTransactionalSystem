@@ -73,7 +73,6 @@ public class BankServer {
         
         Scanner s = new Scanner(System.in);
         
-        //TODO: atribuir diferentes url rmi's para cada Instancia\
         System.out.println("java bankserver.BankServer [rmi url] [db]");
         
         String rminame = null;
