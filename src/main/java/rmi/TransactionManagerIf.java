@@ -18,7 +18,7 @@ import transactionserver.Logger;
  *
  * @author ricardo
  */
-public interface CoordinatorIf extends Remote {
+public interface TransactionManagerIf extends Remote {
     //boolean newCohort(Cohort cohort) throws RemoteException;
     boolean newBank(BankIf bank) throws RemoteException;
     boolean transaction(ArrayList<SubTransaction> requets) throws RemoteException;

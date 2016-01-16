@@ -41,8 +41,12 @@ public class Bank extends UnicastRemoteObject implements BankIf {
         createDB();
         try {
             //default Account
-            if(findAccount("0000") == null)
-                makeAccount("0000");
+            if(findAccount("12345") == null)
+                makeAccount("12345");
+            if(findAccount("10001") == null)
+                makeAccount("10001");
+            if(findAccount("10002") == null)
+                makeAccount("10002");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -141,14 +145,13 @@ public class Bank extends UnicastRemoteObject implements BankIf {
     public List<String> listAccounts() throws RemoteException {
         ArrayList<String> values = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM " + name + ";";
+            String sql = "SELECT * FROM " + name ;
             ResultSet result = sqlStatement.executeQuery(sql);
             
             while(result.next()){
                 values.add(result.getString("ID"));
-                result.close();
             }
-            
+            result.close();
         } catch (Exception e) {
             return null;
         }

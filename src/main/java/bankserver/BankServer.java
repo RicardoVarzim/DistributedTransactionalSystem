@@ -9,8 +9,9 @@ import java.io.Console;
 import rmi.BankIf;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
+import java.util.List;
 import java.util.Scanner;
-import rmi.CoordinatorIf;
+import rmi.TransactionManagerIf;
 
 /**
  *
@@ -55,7 +56,7 @@ public class BankServer {
         //Register in Transaction Server
         try {
             String rmiTransaction = "//localhost:1235/transaction";
-            CoordinatorIf coordinator = (CoordinatorIf) Naming.lookup("rmi:"+rmiTransaction);
+            TransactionManagerIf coordinator = (TransactionManagerIf) Naming.lookup("rmi:"+rmiTransaction);
             System.out.println("Transaction Server Ready.");
             System.out.println("Registering Bank RMI server on Transaction Server.");
             if(coordinator.newBank(bank))
@@ -64,7 +65,7 @@ public class BankServer {
                 System.out.println("Error registering Bank on Transaction Server.");
         } catch (Exception e) {
             System.out.println("Transaction Server NOT FOUND.");
-            //e.printStackTrace();
+            e.printStackTrace();
             System.exit(0);
         }
         

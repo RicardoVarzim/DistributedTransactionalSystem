@@ -5,9 +5,9 @@
  */
 package transactionserver;
 
-import rmi.CoordinatorIf;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
+import rmi.TransactionManagerIf;
 
 /**
  *
@@ -18,9 +18,9 @@ public class TransactionServer {
     private static String DBMS = "derby";
     private static int RMIPORT = 1235;
     private String datasource = "log";
-    private CoordinatorIf coordinator;
+    private TransactionManagerIf coordinator;
     
-    private TransactionServer(CoordinatorIf coordinator, String datasource) {
+    private TransactionServer(TransactionManagerIf coordinator, String datasource) {
         this.coordinator = coordinator;
         this.datasource = datasource;
     }
@@ -43,7 +43,7 @@ public class TransactionServer {
                 datasource = "log";
 
             LocateRegistry.createRegistry(RMIPORT);
-            CoordinatorIf coordinator = new Coordinator();
+            TransactionManagerIf coordinator = new TransactionManager();
             Naming.rebind("rmi:"+rminame,coordinator);
             System.out.println("RMI transaction Manager object registered");
             System.out.println("URL: rmi:"+rminame);

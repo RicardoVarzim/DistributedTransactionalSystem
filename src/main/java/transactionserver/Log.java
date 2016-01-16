@@ -6,7 +6,7 @@
 package transactionserver;
 
 import transaction.Transaction;
-import transactionserver.Coordinator.CoordinatorStatus;
+import transactionserver.TransactionManager.CoordinatorStatus;
 
 /**
  *

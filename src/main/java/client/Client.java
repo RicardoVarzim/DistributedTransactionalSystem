@@ -6,7 +6,7 @@
 package client;
 
 import java.rmi.Naming;
-import rmi.CoordinatorIf;
+import rmi.TransactionManagerIf;
 
 /**
  *
@@ -17,7 +17,7 @@ public class Client {
     public static void main(String[] args) throws Exception{
         try {
             String rmiTransaction = "//localhost:1235/transaction";
-            CoordinatorIf coordinator = (CoordinatorIf) Naming.lookup("rmi:"+rmiTransaction);
+            TransactionManagerIf coordinator = (TransactionManagerIf) Naming.lookup("rmi:"+rmiTransaction);
             //System.out.println(coordinator);
             MainWindow gui = new MainWindow(coordinator);
             gui.setVisible(true);

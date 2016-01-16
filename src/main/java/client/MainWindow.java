@@ -5,17 +5,19 @@
  */
 package client;
 
-import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
+import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
+import javax.swing.text.NumberFormatter;
 import rmi.BankIf;
-import rmi.CoordinatorIf;
 import transaction.SubTransaction;
+import rmi.TransactionManagerIf;
 
 /**
  *
@@ -23,7 +25,7 @@ import transaction.SubTransaction;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    private final CoordinatorIf coordinator;
+    private final TransactionManagerIf coordinator;
     private TransactionServerPing pingThread ;
     
     public List<BankIf> banks = new ArrayList<>();
@@ -32,7 +34,7 @@ public class MainWindow extends javax.swing.JFrame {
      * Creates new form MainWindow
      * @param coordinator
      */
-    public MainWindow(CoordinatorIf coordinator) {
+    public MainWindow(TransactionManagerIf coordinator) {
         initComponents();
         this.coordinator = coordinator;
         pingThread = new TransactionServerPing(coordinator,this);
@@ -62,7 +64,6 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         ConsoleArea = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
-        jTextAmount = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -121,10 +122,6 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Liberation Mono", 1, 18)); // NOI18N
         jLabel3.setText("Cliente de Transações");
 
-        jTextAmount.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00 €"))));
-        jTextAmount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jTextAmount.setText("100");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -143,8 +140,7 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jToggleButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextAmount))))
+                                    .addComponent(jToggleButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -175,9 +171,7 @@ public class MainWindow extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
                             .addComponent(jScrollPane2)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(86, 86, 86)
-                        .addComponent(jTextAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47)
+                        .addGap(158, 158, 158)
                         .addComponent(jToggleButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jToggleButton2)))
@@ -190,11 +184,26 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        // TODO transfer conta1 para conta2
-        if(jList1.getSelectedValue() != null && jList2.getSelectedValue() != null && Float.valueOf((String) jTextAmount.getValue())> 0){
+        
+        if(jList1.getSelectedValue() != null && jList2.getSelectedValue() != null){
+            NumberFormat format = NumberFormat.getInstance();
+            NumberFormatter formatter = new NumberFormatter(format);
+            formatter.setValueClass(Integer.class);
+            formatter.setMinimum(0);
+            formatter.setMaximum(Integer.MAX_VALUE);
+            // If you want the value to be committed on each keystroke instead of focus lost
+            formatter.setCommitsOnValidEdit(true);
+            JFormattedTextField field = new JFormattedTextField(formatter);
+
+            JOptionPane.showMessageDialog(null, field);
+
+            // getValue() always returns something valid
+            System.out.println(field.getValue());
+            float amount = Float.intBitsToFloat((Integer)field.getValue());
+            
             try {
                 ConsoleArea.append("\n Started Transaction.");
-                float amount = Float.valueOf((String) jTextAmount.getValue());
+                
                 String acc1 = jList1.getSelectedValue();
                 String acc2 = jList2.getSelectedValue();
                 String bank1 = (String) jComboBox1.getSelectedItem();
@@ -217,15 +226,32 @@ public class MainWindow extends javax.swing.JFrame {
                 }
                 
             } catch (Exception ex) {
+                ConsoleArea.append("\nERRO! Falhou transferência!");
                 ex.printStackTrace();
             }
         }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
-        if(jList1.getSelectedValue() != null && jList2.getSelectedValue() != null && Float.valueOf((String) jTextAmount.getValue())> 0){
+        
+        if(jList1.getSelectedValue() != null && jList2.getSelectedValue() != null ){
+            NumberFormat format = NumberFormat.getInstance();
+            NumberFormatter formatter = new NumberFormatter(format);
+            formatter.setValueClass(Integer.class);
+            formatter.setMinimum(0);
+            formatter.setMaximum(Integer.MAX_VALUE);
+            // If you want the value to be committed on each keystroke instead of focus lost
+            formatter.setCommitsOnValidEdit(true);
+            JFormattedTextField field = new JFormattedTextField(formatter);
+
+            JOptionPane.showMessageDialog(null, field);
+
+            // getValue() always returns something valid
+            System.out.println(field.getValue());
+            float amount = Float.intBitsToFloat((Integer)field.getValue());
+            
             try {
-                float amount = Float.valueOf((String) jTextAmount.getValue());
+                //float amount = Float.valueOf((String) jTextAmount.getValue());
                 String acc1 = jList1.getSelectedValue();
                 String acc2 = jList2.getSelectedValue();
                 String bank1 = (String) jComboBox1.getSelectedItem();
@@ -306,7 +332,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    public javax.swing.JFormattedTextField jTextAmount;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JToggleButton jToggleButton2;
     // End of variables declaration//GEN-END:variables
@@ -322,11 +347,18 @@ public class MainWindow extends javax.swing.JFrame {
      * @param banks the banks to set
      */
     public void setBanks(List<String> banks)  {
+        int selectedId1 = jComboBox1.getSelectedIndex();
+        int selectedId2 = jComboBox2.getSelectedIndex();
         jComboBox1.removeAllItems();
         jComboBox2.removeAllItems();
         for(String b: banks){
             jComboBox1.addItem(b);
             jComboBox2.addItem(b);
+        }
+        try {
+            jComboBox1.setSelectedIndex(selectedId1);
+            jComboBox2.setSelectedIndex(selectedId2);
+        } catch (Exception e) {
         }
     }
 }

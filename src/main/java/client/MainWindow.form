@@ -39,7 +39,6 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jToggleButton1" max="32767" attributes="0"/>
                                   <Component id="jToggleButton2" max="32767" attributes="0"/>
-                                  <Component id="jTextAmount" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -83,9 +82,7 @@
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
-                      <Component id="jTextAmount" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="158" max="-2" attributes="0"/>
                       <Component id="jToggleButton1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jToggleButton2" min="-2" max="-2" attributes="0"/>
@@ -227,18 +224,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Cliente de Transa&#xe7;&#xf5;es"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JFormattedTextField" name="jTextAmount">
-      <Properties>
-        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format format="#,##0.00 &#x20ac;" subtype="-1" type="4"/>
-        </Property>
-        <Property name="horizontalAlignment" type="int" value="4"/>
-        <Property name="text" type="java.lang.String" value="100"/>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

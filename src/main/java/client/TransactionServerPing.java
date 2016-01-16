@@ -5,17 +5,17 @@
  */
 package client;
 
-import rmi.CoordinatorIf;
+import rmi.TransactionManagerIf;
 
 /**
  *
  * @author ricardo
  */
 public class TransactionServerPing extends Thread {
-        private CoordinatorIf coordinator;
+        private TransactionManagerIf coordinator;
         private MainWindow gui;
         
-        public TransactionServerPing(CoordinatorIf coordinator, MainWindow gui) {
+        public TransactionServerPing(TransactionManagerIf coordinator, MainWindow gui) {
             this.coordinator = coordinator;
             this.gui = gui;
         }
@@ -26,7 +26,7 @@ public class TransactionServerPing extends Thread {
                 
                 try {
                     gui.setBanks(coordinator.getAvailableBanks());
-                    Thread.sleep(10000);
+                    Thread.sleep(30000);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

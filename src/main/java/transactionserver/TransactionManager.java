@@ -5,7 +5,6 @@
  */
 package transactionserver;
 
-import rmi.CoordinatorIf;
 import transaction.Transaction;
 import transaction.SubTransaction;
 import java.rmi.RemoteException;
@@ -15,12 +14,13 @@ import java.util.Collections;
 import java.util.List;
 import rmi.AccountIf;
 import rmi.BankIf;
+import rmi.TransactionManagerIf;
 
 /**
  *
  * @author ricardo
  */
-public class Coordinator extends UnicastRemoteObject implements CoordinatorIf{
+public class TransactionManager extends UnicastRemoteObject implements TransactionManagerIf{
     
     private List<BankIf> banks = Collections.synchronizedList(new ArrayList<>());
     List<Boolean> votes = Collections.synchronizedList(new ArrayList<>());
@@ -30,7 +30,7 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorIf{
     private CoordinatorPingThread pingThread = new CoordinatorPingThread(banks);
     private long THREAD_WAIT_TIME = 1000;
     
-    public Coordinator() throws RemoteException{
+    public TransactionManager() throws RemoteException{
         pingThread.start();
     }
     
@@ -166,7 +166,6 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorIf{
 
         for (Thread t : bankThreads) {
             try {
-                //Timeout threads after a given time.
                 t.join(THREAD_WAIT_TIME);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -186,16 +185,19 @@ public class Coordinator extends UnicastRemoteObject implements CoordinatorIf{
 
     @Override
     public List<String> getAccounts(String bank) throws RemoteException {
-        for(BankIf b : this.banks){
-            if(b.getName().equals(bank)){
-                
-                try {
-                    return b.listAccounts();
-                } catch (Exception ex) {
-                    System.out.println("Cant find remote account.");
-                    ex.printStackTrace();
+        if(bank != null){
+            for(BankIf b : this.banks){
+                if(b.getName().equals(bank)){
+
+                    try {
+                        List<String> list = b.listAccounts();
+                        return list;
+                    } catch (Exception ex) {
+                        System.out.println("Cant find remote account.");
+                        ex.printStackTrace();
+                    }
+
                 }
-               
             }
         }
         return null;
